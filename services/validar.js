@@ -1,4 +1,5 @@
 import { validarDataNascimento } from "./validaDataDeNascimento.js";
+import { validarCPF } from './validarCPF.js';
 
 const retornarMensagemDeErro = (tipo, validity) => {
   let mensagemDeErro = '';
@@ -6,7 +7,8 @@ const retornarMensagemDeErro = (tipo, validity) => {
     "valueMissing",
     "typeMismatch", 
     "tooShort",
-    "rangeUnderflow"
+    "rangeUnderflow",
+    "customError"
   ];
 
   const mensagensDeErro = {
@@ -24,7 +26,8 @@ const retornarMensagemDeErro = (tipo, validity) => {
       customError: "A idade minima é de 18 anos"
     },
     cpf: {
-      valueMissing: 'O CPF é necessário'
+      valueMissing: 'O CPF é necessário',
+      customError: 'Este não é um cpf válido.'
     },
     rg: {
       valueMissing: 'O RG é necessário'
@@ -65,7 +68,8 @@ export const validarInput = (input, adicionarErro = true) => {
   
   const tipo = input.dataset.tipo;
   const validadoresEspecificos = {
-    dataNascimento: input => validarDataNascimento(input)
+    dataNascimento: input => validarDataNascimento(input),
+    cpf: input => validarCPF(input)
   };
 
   if(validadoresEspecificos[tipo]) {
