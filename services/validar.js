@@ -1,5 +1,6 @@
 import { validarDataNascimento } from "./validaDataDeNascimento.js";
 import { validarCPF } from './validarCPF.js';
+import { recuperarEndereco } from './recuperarEndereco.js';
 
 const retornarMensagemDeErro = (tipo, validity) => {
   let mensagemDeErro = '';
@@ -8,7 +9,8 @@ const retornarMensagemDeErro = (tipo, validity) => {
     "typeMismatch", 
     "tooShort",
     "rangeUnderflow",
-    "customError"
+    "customError",
+    "patternMismatch"
   ];
 
   const mensagensDeErro = {
@@ -33,7 +35,9 @@ const retornarMensagemDeErro = (tipo, validity) => {
       valueMissing: 'O RG é necessário'
     },
     cep: {
-      valueMissing: 'O CEP é necessário'
+      valueMissing: 'O CEP é necessário',
+      patternMismatch: 'Este não é um CEP válido.',
+      customError: 'Este não é um CEP válido.'
     },
     logradouro: {
       valueMissing: 'O Logradouro é necessário'
@@ -69,7 +73,8 @@ export const validarInput = (input, adicionarErro = true) => {
   const tipo = input.dataset.tipo;
   const validadoresEspecificos = {
     dataNascimento: input => validarDataNascimento(input),
-    cpf: input => validarCPF(input)
+    cpf: input => validarCPF(input),
+    cep: input => recuperarEndereco(input)
   };
 
   if(validadoresEspecificos[tipo]) {
